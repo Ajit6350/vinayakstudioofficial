@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://ajit63500-vs-web.hf.space/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://ajit63500-vs-web.hf.space/api/:path*"
+    },
+    {
+      "source": "/api-proxy/:path*",
+      "destination": "https://ajit63500-vs-web.hf.space/api-proxy/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ]
 }
