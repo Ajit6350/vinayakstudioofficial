@@ -1,15 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -18,10 +7,6 @@
     {
       "source": "/api-proxy/:path*",
       "destination": "https://ajit63500-vs-web.hf.space/api-proxy/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/server.js"
     }
   ]
 }
