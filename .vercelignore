@@ -1,0 +1,22 @@
+.netlify
+Old_Files
+file:
+logs
+temps_ai-refs
+VinayakpyQt6studio.py
+VinayakPyQt6studio.sh
+app.py
+launch_app.sh
+requirements.txt
+test_site.sh
+venv/
+insightface_models/
+logs/
+temp_ai_refs/
+Old_Files/
+file:/
+
+# 🚫 स्क्रिप्ट्स और कोड
+*.py
+*.sh
+requirements.txt

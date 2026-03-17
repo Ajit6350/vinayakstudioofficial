@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Vinayak Studio | Best Wedding Photographer in Neem Ka Thana</title>
+    <meta name="description" content="Neem Ka Thana's favorite photography studio since 2004.">
+    
+    <!-- External Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="#" class="logo-wrapper">
+            <div class="logo-badge"><span class="logo-main-char">V</span></div>
+            <div class="logo-text-col"><span class="logo-title">VINAYAK</span><span class="logo-subtitle">STUDIO</span></div>
+        </a>
+
+        <div class="hamburger" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li class="menu-close-btn" onclick="toggleMenu()">&times;</li>
+            <li><a href="#" onclick="toggleMenu()">Home</a></li>
+            <li><a href="#about" onclick="toggleMenu()">Legacy</a></li>
+            <li><a href="#motion" onclick="toggleMenu()">Films</a></li>
+            <li><a href="#invites" onclick="toggleMenu()">Invites</a></li>
+            <li><a href="#gallery" onclick="toggleMenu()">Stories</a></li>
+            <li><a href="#client-portal" class="nav-btn" onclick="toggleMenu()">LOGIN</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" id="hero-container">
+        <div class="hero-content">
+            <p>NEEM KA THANA'S FAVOURITE • SINCE 2004</p>
+            <h1>Capturing Eternal Moments</h1>
+        </div>
+        <div class="hero-curve"></div>
+    </header>
+
+    <section id="about" class="about-section">
+        <div class="about-text">
+            <span class="section-sub">THE ARTIST BEHIND THE LENS</span>
+            <h2 class="section-head">We don't just take photos,<br>We create <span style="color:var(--accent-gold); font-style:italic;">Legacies</span>.</h2>
+            <p class="section-desc">Welcome to <b>Vinayak Studio</b>. For over two decades, we have been the silent storytellers of Neem Ka Thana's most royal weddings. Combining traditional values with high-tech innovation, we ensure your memories look as magical as they felt.</p>
+            <img src="https://img.icons8.com/ios/50/2b221e/camera.png" style="opacity:0.7; width:35px;">
+        </div>
+        <div class="about-image"></div>
+    </section>
+
+    <div class="coffee-band">
+        <div class="coffee-curve-top"></div>
+        <h2>Beautiful Weddings, <span style="font-style:normal; font-weight:300;">Breathtaking Films</span></h2>
+    </div>
+
+    <section id="motion" class="motion-section">
+        <div class="films-header" style="text-align: center; margin-bottom: 50px;">
+            <span class="section-sub">CINEMATIC MASTERPIECES</span>
+        </div>
+        <div class="films-grid" id="films-dynamic"></div>
+        <h3 style="font-family:'Playfair Display'; text-align:center; margin-top:50px; font-size:1.8rem; color:var(--primary-text);">Trending Reels</h3>
+        <div class="reels-strip" id="reels-dynamic"></div>
+    </section>
+
+    <section id="invites" class="invite-section">
+        <h2 class="section-head">High-Tech Invitations</h2>
+        <p class="section-desc">Experience the future. Click on a phone to view samples.</p>
+        <div class="invite-grid">
+            <div style="text-align: center;">
+                <div class="phone-mockup" onclick="playInvite('2d')">
+                    <div class="phone-screen" style="background-image: url('https://images.unsplash.com/photo-1586985288123-2495f577c250?q=80&w=1770&auto=format&fit=crop');">
+                        <div class="screen-overlay"><i class="fas fa-paint-brush fa-2x" style="color:var(--accent-gold);"></i><span style="display:block; margin-top:10px; font-family:'Playfair Display'; font-size:1.2rem;">Caricature Art</span></div>
+                    </div>
+                    <div class="phone-notch"></div>
+                </div>
+                <div class="invite-title">Fun & Story</div>
+            </div>
+            <div style="text-align: center; transform: translateY(-30px);">
+                <div class="phone-mockup" onclick="playInvite('3d')">
+                    <div class="phone-screen" style="background-image: url('https://images.unsplash.com/photo-1542640244-7e672d6bd4e8?q=80&w=1965&auto=format&fit=crop');">
+                        <div class="screen-overlay"><i class="fas fa-cube fa-3x" style="color:var(--accent-gold);"></i><span style="display:block; margin-top:10px; font-family:'Playfair Display'; font-size:1.5rem;">3D Grandeur</span></div>
+                    </div>
+                    <div class="phone-notch"></div>
+                </div>
+                <div class="invite-title">Royal Motion</div>
+            </div>
+            <div style="text-align: center;">
+                <div class="phone-mockup" onclick="playInvite('teaser')">
+                    <div class="phone-screen" style="background-image: url('https://images.unsplash.com/photo-1621621667797-e06afc21085c?q=80&w=1887&auto=format&fit=crop');">
+                        <div class="screen-overlay"><i class="fas fa-stopwatch fa-2x" style="color:var(--accent-gold);"></i><span style="display:block; margin-top:10px; font-family:'Playfair Display'; font-size:1.2rem;">Teaser</span></div>
+                    </div>
+                    <div class="phone-notch"></div>
+                </div>
+                <div class="invite-title">Save The Date</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery-section">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <span class="section-sub">SELECTED WORKS</span>
+            <h2 class="section-head">Signature Stories</h2>
+        </div>
+        <div class="masonry-grid" id="photo-grid-dynamic"></div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-img"></div>
+        <div class="contact-form">
+            <span class="section-sub">LET'S CREATE MAGIC</span>
+            <h2 class="section-head" style="margin-bottom:10px;">Get us to shoot you!</h2>
+            <p style="margin-bottom:40px; color:#777;">Fill this form and we'll connect on WhatsApp.</p>
+            <form id="waForm">
+                <input type="text" id="waName" class="c-input" placeholder="Your Name (Required)">
+                <input type="text" id="waMobile" class="c-input" placeholder="Phone Number (Required)">
+                <input type="text" id="waDate" class="c-input" placeholder="Event Date & Venue">
+                <button type="button" onclick="submitToWA()" class="c-btn">SEND ENQUIRY</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="client-portal" style="padding: 100px 5%; background: var(--bg-cream); text-align: center;">
+        <i class="fas fa-lock fa-2x" style="color:var(--coffee-dark); margin-bottom:20px;"></i>
+        <h2 class="section-head" style="font-size:2rem;">Client Lounge</h2>
+        <div style="max-width: 350px; margin: 0 auto;">
+            <input type="text" id="clientCodeInput" placeholder="Enter Access Code" class="c-input" style="text-align: center; font-size: 1.1rem; letter-spacing: 2px;">
+            <button onclick="unlockClientGallery()" class="c-btn" style="background: var(--accent-gold);">ENTER GALLERY</button>
+        </div>
+        <div id="clientResultArea" style="margin-top: 50px;"></div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>Vinayak Studio</h2>
+                <p>EST. 2004 • NEEM KA THANA</p>
+            </div>
+            <div class="footer-nav">
+                <div class="footer-links-inline">
+                    <a href="#motion">Films</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#invites">Invites</a>
+                    <a href="#contact">Book</a>
+                </div>
+                <div class="footer-socials">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-contact">
+                <a href="tel:+916350095221"><i class="fas fa-phone-alt"></i> +91 63500 95221</a>
+                <a href="#"><i class="fas fa-map-marker-alt"></i> Indira Tower, SBI Gali</a>
+            </div>
+        </div>
+        <div class="copyright">© 2026 Vinayak Studio. Crafted for Royalty.</div>
+    </footer>
+
+    <a href="https://wa.me/916350095221" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <button id="sendFloat" onclick="sendSelection()">Send Selection (<span id="selCount">0</span>) <i class="fab fa-whatsapp"></i></button>
+
+    <!-- Video Lightbox -->
+    <div id="vidLB" class="lightbox" onclick="closeLB()">
+        <div class="lightbox-content">
+            <span class="close-lb" onclick="closeLB()">✕</span>
+            <iframe id="lbFrame" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div id="imgLB" class="lightbox" onclick="closeImgLB()">
+        <div class="lb-arrow lb-prev" onclick="event.stopPropagation(); changePhoto(-1)">❮</div>
+        <div class="lb-arrow lb-next" onclick="event.stopPropagation(); changePhoto(1)">❯</div>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <span class="close-lb" onclick="closeImgLB()">✕</span>
+            <img id="lbImg" src="">
+            <div class="lb-actions" id="lbActions" style="display:none;">
+                <button id="lbHeart" class="lb-btn" onclick="toggleHeart()"><i class="fas fa-heart"></i> <span id="lbHeartTxt">Select</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Local JavaScript -->
+    <script src="/api-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
