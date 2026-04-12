@@ -4035,6 +4035,7 @@ function displaySearchResults(matches) {
         dlBtn.className = 'ai-result-download-btn';
         dlBtn.innerHTML = '<i class="fas fa-download"></i>';
         dlBtn.title = 'Download';
+        dlBtn.style.cssText = 'position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); color:white; padding:8px; border-radius:50%; font-size:12px; cursor:pointer; z-index:2147483647; text-decoration:none; display:flex; justify-content:center; align-items:center; width:30px; height:30px; transition:transform 0.2s; backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,0.2);';
         dlBtn.onclick = (e) => {
             e.stopPropagation();
             forceDownloadImage(imgUrl, fname);
@@ -4085,7 +4086,7 @@ function _injectLightboxDownloadBtn(prevPhotos, prevIsSelMode) {
         dlBtn.id = 'lbDownloadBtn';
         dlBtn.innerHTML = '<i class="fas fa-download"></i> Download';
         dlBtn.style.cssText = `
-            position:absolute; bottom:20px; right:20px; z-index:100;
+            position:absolute; bottom:20px; right:20px; z-index:2147483647;
             background:linear-gradient(135deg,#c5a059,#e0c283); color:#000;
             padding:9px 18px; border-radius:30px; font-family:'Montserrat',sans-serif;
             font-size:0.75rem; font-weight:700; letter-spacing:1px;
@@ -4171,27 +4172,25 @@ function resetAICamera() {
     openAICamera();
 }
 
-// Mobile-friendly force download (fetches as blob to prevent new tab on iOS Safari/Chrome)
-async function forceDownloadImage(url, fname) {
-    try {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = fname;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
-    } catch (e) {
-        console.error('Force download failed', e);
-        window.open(url, '_blank');
-    }
+// Mobile-friendly force download (Synchronous to bypass Safari popup blockers)
+function forceDownloadImage(url, fname) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fname;
+    a.target = '_blank'; // Failsafe for CORS / iOS Safari
+    
+    // Crucial: Append, click, and clean up synchronously
+    // This allows the browser to maintain the user's "gesture chain"
+    document.body.appendChild(a);
+    a.click();
+    
+    setTimeout(() => {
+        if (a.parentNode) a.parentNode.removeChild(a);
+    }, 100);
 }
 
 // Download all AI matched photos robustly via loop + Smart Sync to prevent duplicates
-async function downloadAllAIMatches() {
+async function downloadAllAIMatches(forceAll = false) {
     if (!_aiMatchPhotos || _aiMatchPhotos.length === 0) return;
     
     // SMART SYNC: Check local storage for previously downloaded photos
@@ -4200,23 +4199,23 @@ async function downloadAllAIMatches() {
         downloadedPhotos = JSON.parse(localStorage.getItem('vs_downloaded_ai') || '[]');
     } catch(e) {}
     
-    const newPhotos = _aiMatchPhotos.filter(url => !downloadedPhotos.includes(url));
+    const newPhotos = forceAll ? _aiMatchPhotos : _aiMatchPhotos.filter(url => !downloadedPhotos.includes(url));
     
-    if (newPhotos.length === 0) {
+    if (newPhotos.length === 0 && !forceAll) {
         const toast = document.createElement('div');
         toast.className = 'vs-toast';
-        toast.innerHTML = 'All these photos have already been downloaded!';
-        toast.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:#c5a059; padding:12px 20px; border-radius:30px; font-weight:bold; z-index:99999; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); font-family:"Montserrat", sans-serif; font-size:12px; border:1px solid #c5a059;';
+        toast.innerHTML = `All photos already downloaded! <button onclick="downloadAllAIMatches(true); this.parentNode.remove()" style="margin-left:10px; padding:6px 12px; background:white; color:black; border:none; border-radius:12px; cursor:pointer; font-weight:bold;">Download Anyway</button>`;
+        toast.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:#c5a059; padding:12px 20px; border-radius:30px; font-weight:bold; z-index:2147483647; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); font-family:"Montserrat", sans-serif; font-size:12px; border:1px solid #c5a059; display:flex; align-items:center; gap:8px;';
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+        setTimeout(() => { if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 8000);
         return;
     }
     
     // Using simple toast inside the public guest space
     const toast = document.createElement('div');
     toast.className = 'vs-toast';
-    toast.innerHTML = `Preparing ${newPhotos.length} new photos for download...`;
-    toast.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:white; padding:12px 20px; border-radius:30px; font-weight:bold; z-index:99999; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); font-family:"Montserrat", sans-serif; font-size:12px; border:1px solid #c5a059;';
+    toast.innerHTML = `Downloading 1 of ${newPhotos.length}...`;
+    toast.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:white; padding:12px 20px; border-radius:30px; font-weight:bold; z-index:2147483647; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); font-family:"Montserrat", sans-serif; font-size:12px; border:1px solid #c5a059; min-width:200px; transition:all 0.2s;';
     document.body.appendChild(toast);
     
     let downloadedCount = 0;
@@ -4224,9 +4223,12 @@ async function downloadAllAIMatches() {
         const url = newPhotos[i];
         const fname = url.split('/').pop().split('?')[0] || `vinayak_memory_${Date.now()}_${i + 1}.jpg`;
         
+        toast.innerHTML = `Downloading ${i + 1} of ${newPhotos.length}...`;
+
         try {
-            // Use fetch and blob for "Download All" since it bypasses popup blockers successfully
+            // Use fetch and blob for "Download All" to bundle them cleanly without 50 tabs
             const response = await fetch(url);
+            if (!response.ok) throw new Error('CORS or Network Error');
             const blob = await response.blob();
             const blobUrl = URL.createObjectURL(blob);
             
@@ -4240,18 +4242,21 @@ async function downloadAllAIMatches() {
             setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
             
             // Track downloaded
-            downloadedPhotos.push(url);
+            if (!downloadedPhotos.includes(url)) downloadedPhotos.push(url);
             localStorage.setItem('vs_downloaded_ai', JSON.stringify(downloadedPhotos));
             downloadedCount++;
             
-            // Wait 600ms between downloads
-            await new Promise(r => setTimeout(r, 600));
+            // Wait slightly between downloads to prevent hanging the browser
+            await new Promise(r => setTimeout(r, 400));
         } catch (e) {
-            console.error('Download failed for', url, e);
+            console.error('Download All batch failed for', url, e);
+            // Fallback for CORS blocks during fetch: Force open silently (might get blocked by strict popups)
+            window.open(url, '_blank');
+            await new Promise(r => setTimeout(r, 600));
         }
     }
 
-    toast.innerHTML = 'All photos downloaded successfully!';
+    toast.innerHTML = `✅ Successfully downloaded ${downloadedCount} photos!`;
     setTimeout(() => { if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
 }
 
