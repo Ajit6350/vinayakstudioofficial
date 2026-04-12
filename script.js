@@ -580,31 +580,22 @@ function processClientLoungeData(clientData, clientCode) {
         if (cont && rail) {
             cont.appendChild(card);
 
-            // Clean up any old RSVP trackers
-            const oldTracker = rail.querySelector('.rsvp-tracker');
+            // Clean up old status badges
+            const oldTracker = rail.querySelector('.video-delivered-status');
             if (oldTracker) oldTracker.remove();
 
-            // 👁️ Sleek RSVP Tracking Button (Replaces large table)
-            const rsvps = clientData.guest_rsvps || [];
-
+            // 👁️ Small 'Delivered' Status (Replaces heavy Tracker button)
+            const videoViews = clientData.stats?.video_views || 0;
             const rsvpDiv = document.createElement('div');
-            rsvpDiv.className = 'rsvp-tracker sleek-tracker-btn';
-            rsvpDiv.style.marginTop = '20px';
-            rsvpDiv.style.display = 'flex';
-            rsvpDiv.style.justifyContent = 'center';
+            rsvpDiv.className = 'video-delivered-status';
+            rsvpDiv.style.cssText = 'margin-top: 12px; display: flex; justify-content: center;';
 
             rsvpDiv.innerHTML = `
-                <button onclick="viewClientGuestList()" class="n-btn highlight" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(197,160,89,0.3); color: #c5a059; border-radius: 30px; padding: 10px 20px; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
-                    <i class="fas fa-eye"></i> Tracker 
-                    <span style="background: var(--accent-gold); color: black; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-left: 5px;">${rsvps.length}</span>
-                </button>
+                <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(197,160,89,0.2); color: #fff; border-radius: 20px; padding: 4px 12px; font-size: 10px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 6px; letter-spacing: 1px; text-transform: uppercase;">
+                    <span style="width: 6px; height: 6px; background: #c5a059; border-radius: 50%; box-shadow: 0 0 8px #c5a059;"></span>
+                    <span>Delivered to ${videoViews} Guests</span>
+                </div>
             `;
-
-            // Add hover effect
-            const btn = rsvpDiv.querySelector('button');
-            btn.onmouseover = () => { btn.style.background = 'rgba(197,160,89,0.1)'; btn.style.transform = 'translateY(-2px)'; };
-            btn.onmouseout = () => { btn.style.background = 'rgba(0,0,0,0.5)'; btn.style.transform = 'translateY(0)'; };
-
             rail.appendChild(rsvpDiv);
 
             rail.style.display = 'block';
