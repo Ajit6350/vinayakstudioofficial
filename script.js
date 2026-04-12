@@ -3974,12 +3974,20 @@ async function captureAndSearch() {
 // ── BUG #1 + #2 FIX: displaySearchResults — Large Gallery + Download + Working Lightbox ──
 let _aiMatchPhotos = []; // stores matched photo URLs for lightbox
 
+// ── MULTI-SELECTION DOWNLOAD STATE ──
+let _aiSelectedUrls = new Set();
+let _aiIsSelectionMode = false;
+let _aiTouchTimer = null;
+
 function displaySearchResults(matches) {
     const resultsContainer = document.getElementById('aiResultsContainer');
     const grid = document.getElementById('aiResultsGrid');
 
     grid.innerHTML = '';
     _aiMatchPhotos = [];
+    _aiSelectedUrls.clear();
+    _aiIsSelectionMode = false;
+    updateSelectionUI();
 
     if (!matches || matches.length === 0) {
         grid.innerHTML = `<div class="ai-no-results">
@@ -4003,13 +4011,14 @@ function displaySearchResults(matches) {
         header.innerHTML = `Your Magical Moments
             <div class="ai-results-count-badge" style="display:inline-flex; flex-wrap:wrap; align-items:center; gap:12px; margin-left:12px; margin-top:8px;">
                 <span><i class="fas fa-images"></i>&nbsp;${_aiMatchPhotos.length} Photos Found</span>
-                <button class="ai-download-all-btn" onclick="downloadAllAIMatches()" style="background: linear-gradient(135deg, #c5a059, #e0c283); color: black; border: none; border-radius: 20px; padding: 6px 14px; font-weight: bold; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(197,160,89,0.3); transition: transform 0.2s;">
+                <button id="aiDownloadAllBtnTop" class="ai-download-all-btn" onclick="downloadAllAIMatches()" style="background: linear-gradient(135deg, #c5a059, #e0c283); color: black; border: none; border-radius: 20px; padding: 6px 14px; font-weight: bold; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(197,160,89,0.3); transition: transform 0.2s;">
                     <i class="fas fa-download"></i> Download All
                 </button>
-            </div>`;
+            </div>
+            <p style="font-size: 10px; color: #a1a1aa; margin-top: 8px; font-weight: normal;">💡 Tip: Long-press any photo to select multiple photos for download.</p>`;
     }
 
-    // Render each photo as a luxury card (BUG #2 FIX)
+    // Render each photo as a luxury card
     _aiMatchPhotos.forEach((imgUrl, cardIdx) => {
         const card = document.createElement('div');
         card.className = 'ai-result-card';
@@ -4029,7 +4038,7 @@ function displaySearchResults(matches) {
             _openAILightbox(cardIdx);
         };
 
-        // Download button (BUG #2 FIX) - Upgraded to force download
+        // Download button (BUG #2 FIX)
         const fname = imgUrl.split('/').pop().split('?')[0] || `memory_${cardIdx + 1}.jpg`;
         const dlBtn = document.createElement('button');
         dlBtn.className = 'ai-result-download-btn';
@@ -4041,16 +4050,177 @@ function displaySearchResults(matches) {
             forceDownloadImage(imgUrl, fname);
         };
 
+        // Multi-Selection Checkmark (Hidden by default)
+        const checkmark = document.createElement('div');
+        checkmark.className = 'ai-selection-checkmark';
+        checkmark.innerHTML = '<i class="fas fa-check"></i>';
+        checkmark.style.cssText = 'position:absolute; top:10px; left:10px; width:24px; height:24px; border-radius:50%; border:2px solid white; background:rgba(0,0,0,0.4); color:transparent; display:flex; justify-content:center; align-items:center; font-size:12px; z-index:2147483647; transition:all 0.2s ease; pointer-events:none; opacity:0; transform:scale(0.8);';
+        
+        card.dataset.url = imgUrl; // Store url for easy access
+
         card.appendChild(img);
         card.appendChild(expandBtn);
         card.appendChild(dlBtn);
+        card.appendChild(checkmark);
 
-        // Click card to open lightbox
-        card.onclick = () => _openAILightbox(cardIdx);
+        // --- LONG PRESS & CLICK HANDLING ---
+        let isLongPress = false;
+        
+        const handleContextMenu = (e) => {
+            if (_aiIsSelectionMode) e.preventDefault(); // Prevent standard right-click menu if selecting
+        };
+        
+        const handleTouchStart = (e) => {
+            isLongPress = false;
+            _aiTouchTimer = setTimeout(() => {
+                isLongPress = true;
+                toggleCardSelection(card, imgUrl);
+                // Vibrate if supported
+                if (navigator.vibrate) navigator.vibrate(50);
+            }, 600); // 600ms = Long Press
+        };
+
+        const handleTouchEnd = (e) => {
+            if (_aiTouchTimer) clearTimeout(_aiTouchTimer);
+        };
+
+        const handleTouchMove = () => {
+            // Cancel long press if user swipes/scrolls
+            if (_aiTouchTimer) clearTimeout(_aiTouchTimer);
+        };
+
+        card.addEventListener('mousedown', handleTouchStart);
+        card.addEventListener('touchstart', handleTouchStart, {passive: true});
+        card.addEventListener('mouseup', handleTouchEnd);
+        card.addEventListener('touchend', handleTouchEnd);
+        card.addEventListener('mousemove', handleTouchMove);
+        card.addEventListener('touchmove', handleTouchMove, {passive: true});
+        card.addEventListener('contextmenu', handleContextMenu);
+
+        // Click card to open lightbox OR select if in selection mode
+        card.onclick = (e) => {
+            if (isLongPress) {
+                // Ignore click if it was just a long press
+                return;
+            }
+            if (_aiIsSelectionMode) {
+                toggleCardSelection(card, imgUrl);
+            } else {
+                _openAILightbox(cardIdx);
+            }
+        };
         grid.appendChild(card);
     });
 
     resultsContainer.style.display = 'block';
+}
+
+// Multi-Selection Logic Helpers
+function toggleCardSelection(cardElement, url) {
+    if (_aiSelectedUrls.has(url)) {
+        _aiSelectedUrls.delete(url);
+        cardElement.classList.remove('ai-selected');
+        const checkmark = cardElement.querySelector('.ai-selection-checkmark');
+        if (checkmark) {
+            checkmark.style.background = 'rgba(0,0,0,0.4)';
+            checkmark.style.color = 'transparent';
+            checkmark.style.borderColor = 'white';
+        }
+    } else {
+        _aiSelectedUrls.add(url);
+        cardElement.classList.add('ai-selected');
+        const checkmark = cardElement.querySelector('.ai-selection-checkmark');
+        if (checkmark) {
+            checkmark.style.background = '#c5a059';
+            checkmark.style.color = 'white';
+            checkmark.style.borderColor = '#c5a059';
+        }
+        _aiIsSelectionMode = true;
+    }
+    updateSelectionUI();
+}
+
+function updateSelectionUI() {
+    let selectionBar = document.getElementById('aiSelectionBar');
+    const downloadAllBtn = document.getElementById('aiDownloadAllBtnTop');
+
+    if (_aiSelectedUrls.size > 0) {
+        _aiIsSelectionMode = true;
+        if (downloadAllBtn) downloadAllBtn.style.display = 'none';
+
+        // Dim unselected cards to highlight selected ones
+        document.querySelectorAll('.ai-result-card').forEach(card => {
+            const check = card.querySelector('.ai-selection-checkmark');
+            if (check) {
+                check.style.opacity = '1';
+                check.style.transform = 'scale(1)';
+            }
+            if (!card.classList.contains('ai-selected')) {
+                card.style.opacity = '0.7';
+            } else {
+                card.style.opacity = '1';
+            }
+        });
+
+        if (!selectionBar) {
+            selectionBar = document.createElement('div');
+            selectionBar.id = 'aiSelectionBar';
+            selectionBar.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); padding:12px 20px; border-radius:30px; z-index:2147483647; display:flex; align-items:center; gap:16px; border:1px solid rgba(197,160,89,0.3); box-shadow:0 10px 40px rgba(0,0,0,0.5); animation:slideUpFade 0.3s forwards;';
+            
+            const countText = document.createElement('span');
+            countText.id = 'aiSelectionCount';
+            countText.style.cssText = 'color:white; font-family:"Montserrat", sans-serif; font-weight:bold; font-size:14px;';
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download Selected';
+            downloadBtn.style.cssText = 'background:linear-gradient(135deg, #c5a059, #e0c283); color:black; border:none; padding:8px 16px; border-radius:20px; font-weight:bold; font-size:12px; cursor:pointer; font-family:"Montserrat", sans-serif; transition:transform 0.2s;';
+            downloadBtn.onclick = () => downloadSelectedPhotos();
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.innerHTML = '<i class="fas fa-times"></i>';
+            cancelBtn.style.cssText = 'background:rgba(255,255,255,0.1); color:white; border:none; width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; justify-content:center; align-items:center; transition:background 0.2s;';
+            cancelBtn.onclick = () => {
+                _aiSelectedUrls.clear();
+                _aiIsSelectionMode = false;
+                updateSelectionUI();
+            };
+
+            selectionBar.appendChild(countText);
+            selectionBar.appendChild(downloadBtn);
+            selectionBar.appendChild(cancelBtn);
+            document.body.appendChild(selectionBar);
+
+            // Add dynamic animation style if missing
+            if (!document.getElementById('aiSelectionStyles')) {
+                const style = document.createElement('style');
+                style.id = 'aiSelectionStyles';
+                style.innerHTML = `
+                    @keyframes slideUpFade { from { opacity: 0; bottom: 0; } to { opacity: 1; bottom: 20px; } }
+                    .ai-result-card { transition: opacity 0.3s ease; }
+                    .ai-result-card.ai-selected { border-radius: 12px; border: 2px solid #c5a059; padding: 2px; }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        document.getElementById('aiSelectionCount').innerHTML = `${_aiSelectedUrls.size} Selected`;
+
+    } else {
+        _aiIsSelectionMode = false;
+        if (downloadAllBtn) downloadAllBtn.style.display = 'flex';
+        if (selectionBar) selectionBar.remove();
+
+        // Restore cards
+        document.querySelectorAll('.ai-result-card').forEach(card => {
+            card.style.opacity = '1';
+            card.classList.remove('ai-selected');
+            const check = card.querySelector('.ai-selection-checkmark');
+            if (check) {
+                check.style.opacity = '0';
+                check.style.transform = 'scale(0.8)';
+            }
+        });
+    }
 }
 
 // Dedicated AI lightbox opener — sets photos array and opens standard lightbox
@@ -4260,6 +4430,65 @@ async function downloadAllAIMatches(forceAll = false) {
     setTimeout(() => { if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
 }
 
+// Master function to download only the photos selected via the floating bar
+async function downloadSelectedPhotos() {
+    if (_aiSelectedUrls.size === 0) return;
+
+    const urlsToDownload = Array.from(_aiSelectedUrls);
+    
+    // Clear selection UI first
+    _aiSelectedUrls.clear();
+    _aiIsSelectionMode = false;
+    updateSelectionUI();
+
+    const toast = document.createElement('div');
+    toast.className = 'vs-toast';
+    toast.innerHTML = `Downloading 1 of ${urlsToDownload.length}...`;
+    toast.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.9); color:white; padding:12px 20px; border-radius:30px; font-weight:bold; z-index:2147483647; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); font-family:"Montserrat", sans-serif; font-size:12px; border:1px solid #c5a059; min-width:200px; transition:all 0.2s;';
+    document.body.appendChild(toast);
+    
+    let downloadedCount = 0;
+    for (let i = 0; i < urlsToDownload.length; i++) {
+        const url = urlsToDownload[i];
+        const fname = url.split('/').pop().split('?')[0] || `vinayak_memory_selected_${i + 1}.jpg`;
+        
+        toast.innerHTML = `Downloading ${i + 1} of ${urlsToDownload.length}...`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('CORS or Network Error');
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = fname;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+            
+            // Register in Smart Sync so "Download All" ignores it later
+            try {
+                let downloadedPhotos = JSON.parse(localStorage.getItem('vs_downloaded_ai') || '[]');
+                if (!downloadedPhotos.includes(url)) downloadedPhotos.push(url);
+                localStorage.setItem('vs_downloaded_ai', JSON.stringify(downloadedPhotos));
+            } catch(e) {}
+            
+            downloadedCount++;
+            await new Promise(r => setTimeout(r, 400));
+        } catch (e) {
+            console.error('Download selected failed for', url, e);
+            window.open(url, '_blank');
+            await new Promise(r => setTimeout(r, 600));
+        }
+    }
+
+    toast.innerHTML = `✅ Successfully downloaded ${downloadedCount} photos!`;
+    setTimeout(() => { if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
+}
+
 // Attach to global scope
 window.openAICamera = openAICamera;
 window.closeAICamera = closeAICamera;
@@ -4268,3 +4497,4 @@ window.captureAndSearch = captureAndSearch;
 window.resetAICamera = resetAICamera;
 window.downloadAllAIMatches = downloadAllAIMatches;
 window.forceDownloadImage = forceDownloadImage;
+window.downloadSelectedPhotos = downloadSelectedPhotos;
