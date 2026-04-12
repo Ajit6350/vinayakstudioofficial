@@ -1,194 +1,803 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Vinayak Studio | Best Wedding Photographer in Neem Ka Thana</title>
     <meta name="description" content="Neem Ka Thana's favorite photography studio since 2004.">
-    
-    <!-- External Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta property="og:title" content="Your Magical Memories | Vinayak Studio">
+    <meta property="og:description"
+        content="Experience the magic captured by Vinayak Studio. Click to view the Exclusive VIP Wedding Gallery.">
+    <meta property="og:image"
+        content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
 
+    <!-- Preconnect to origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Load Google Fonts asynchronously -->
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&display=swap"
+        media="print" onload="this.media='all'">
+
+    <!-- Load Font Awesome asynchronously -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        media="print" onload="this.media='all'">
+
+    <link href="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/src/Style/stPageFlip.min.css" rel="stylesheet">
     <!-- Local Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css?v=2.2">
+    <!-- HLS.js for Cloudflare R2 Streaming -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+
 </head>
+
 <body>
+    <main class="main-content">
 
-    <nav id="navbar">
-        <a href="#" class="logo-wrapper">
-            <div class="logo-badge"><span class="logo-main-char">V</span></div>
-            <div class="logo-text-col"><span class="logo-title">VINAYAK</span><span class="logo-subtitle">STUDIO</span></div>
-        </a>
 
-        <div class="hamburger" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-        </div>
-
-        <ul class="nav-links" id="navLinks">
-            <li class="menu-close-btn" onclick="toggleMenu()">&times;</li>
-            <li><a href="#" onclick="toggleMenu()">Home</a></li>
-            <li><a href="#about" onclick="toggleMenu()">Legacy</a></li>
-            <li><a href="#motion" onclick="toggleMenu()">Films</a></li>
-            <li><a href="#invites" onclick="toggleMenu()">Invites</a></li>
-            <li><a href="#gallery" onclick="toggleMenu()">Stories</a></li>
-            <li><a href="#client-portal" class="nav-btn" onclick="toggleMenu()">LOGIN</a></li>
-        </ul>
-    </nav>
-
-    <header class="hero" id="hero-container">
-        <div class="hero-content">
-            <p>NEEM KA THANA'S FAVOURITE • SINCE 2004</p>
-            <h1>Capturing Eternal Moments</h1>
-        </div>
-        <div class="hero-curve"></div>
-    </header>
-
-    <section id="about" class="about-section">
-        <div class="about-text">
-            <span class="section-sub">THE ARTIST BEHIND THE LENS</span>
-            <h2 class="section-head">We don't just take photos,<br>We create <span style="color:var(--accent-gold); font-style:italic;">Legacies</span>.</h2>
-            <p class="section-desc">Welcome to <b>Vinayak Studio</b>. For over two decades, we have been the silent storytellers of Neem Ka Thana's most royal weddings. Combining traditional values with high-tech innovation, we ensure your memories look as magical as they felt.</p>
-            <img src="https://img.icons8.com/ios/50/2b221e/camera.png" style="opacity:0.7; width:35px;">
-        </div>
-        <div class="about-image"></div>
-    </section>
-
-    <div class="coffee-band">
-        <div class="coffee-curve-top"></div>
-        <h2>Beautiful Weddings, <span style="font-style:normal; font-weight:300;">Breathtaking Films</span></h2>
-    </div>
-
-    <section id="motion" class="motion-section">
-        <div class="films-header" style="text-align: center; margin-bottom: 50px;">
-            <span class="section-sub">CINEMATIC MASTERPIECES</span>
-        </div>
-        <div class="films-grid" id="films-dynamic"></div>
-        <h3 style="font-family:'Playfair Display'; text-align:center; margin-top:50px; font-size:1.8rem; color:var(--primary-text);">Trending Reels</h3>
-        <div class="reels-strip" id="reels-dynamic"></div>
-    </section>
-
-    <section id="invites" class="invite-section">
-        <h2 class="section-head">High-Tech Invitations</h2>
-        <p class="section-desc">Experience the future. Click on a phone to view samples.</p>
-        <div class="invite-grid">
-            <div style="text-align: center;">
-                <div class="phone-mockup" onclick="playInvite('2d')">
-                    <div class="phone-screen" style="background-image: url('https://images.unsplash.com/photo-1586985288123-2495f577c250?q=80&w=1770&auto=format&fit=crop');">
-                        <div class="screen-overlay"><i class="fas fa-paint-brush fa-2x" style="color:var(--accent-gold);"></i><span style="display:block; margin-top:10px; font-family:'Playfair Display'; font-size:1.2rem;">Caricature Art</span></div>
-                    </div>
-                    <div class="phone-notch"></div>
+        <nav id="navbar">
+            <a href="#" class="logo-wrapper">
+                <div class="logo-badge"><span class="logo-main-char">V</span></div>
+                <div class="logo-text-col"><span class="logo-title">VINAYAK</span><span
+                        class="logo-subtitle">STUDIO</span>
                 </div>
-                <div class="invite-title">Fun & Story</div>
+            </a>
+
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
             </div>
-            <div style="text-align: center; transform: translateY(-30px);">
-                <div class="phone-mockup" onclick="playInvite('3d')">
-                    <div class="phone-screen" style="background-image: url('https://images.unsplash.com/photo-1542640244-7e672d6bd4e8?q=80&w=1965&auto=format&fit=crop');">
-                        <div class="screen-overlay"><i class="fas fa-cube fa-3x" style="color:var(--accent-gold);"></i><span style="display:block; margin-top:10px; font-family:'Playfair Display'; font-size:1.5rem;">3D Grandeur</span></div>
+
+            <ul class="nav-links" id="navLinks">
+                <li class="menu-close-btn" onclick="toggleMenu()">&times;</li>
+                <li><a href="#" onclick="toggleMenu()">Home</a></li>
+                <li><a href="#about" onclick="toggleMenu()">Legacy</a></li>
+                <li><a href="#motion" onclick="toggleMenu()">Films</a></li>
+                <li><a href="#invites" onclick="toggleMenu()">Invites</a></li>
+                <li><a href="#gallery" onclick="toggleMenu()">Stories</a></li>
+                <li><a href="#client-portal" class="nav-btn" onclick="toggleMenu()">LOGIN</a></li>
+            </ul>
+        </nav>
+
+        <section id="home" class="hero">
+            <video id="heroVideo" class="hero-video-bg" autoplay loop muted playsinline>
+                <source src="" type="video/mp4">
+            </video>
+
+            <div class="overlay"></div>
+
+            <div class="hero-content">
+                <p class="hero-eyebrow">Est. 2004 &nbsp;&middot;&nbsp; Neem Ka Thana</p>
+                <h1>Capturing Your<br><em>Magical Moments</em></h1>
+                <p class="hero-tagline">Two Decades of Trust. A Lifetime of Memories.</p>
+                <button class="cta-button"
+                    onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Book Your
+                    Day</button>
+            </div>
+            <div class="hero-curve"></div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="about-image" style="background: url('assets/images/about-me.jpg') center/cover no-repeat;">
+            </div>
+
+            <div class="about-text">
+                <span class="section-sub" style="text-align: left;">THE ARTISTS BEHIND THE LENS</span>
+
+                <p class="narrative-body" style="text-align: left; margin-left: 0; max-width: 100%;">
+                    At Vinayak Studio, we don't just capture photographs — we celebrate love in its most beautiful, raw,
+                    and
+                    unforgettable form. Since 2004, we have been the trusted storytellers of Neem Ka Thana's most
+                    cherished
+                    celebrations. From intimate family gatherings to grand royal weddings, 600+ families have placed
+                    their
+                    faith
+                    in our lens.
+                </p>
+                <p class="narrative-body" style="text-align: left; margin-left: 0; max-width: 100%;">
+                    Founded with a dream to turn life's most precious moments into timeless works of art, our journey is
+                    built
+                    on trust earned over two decades. Combining traditional heart with cinematic craft, every frame we
+                    create
+                    is a chapter in your family's legacy — as vivid and magical as the day itself felt.
+                </p>
+
+                <a href="#contact" class="btn-pill" style="margin-top: 15px;">Get in Touch</a>
+            </div>
+        </section>
+
+        <div class="coffee-band">
+            <div class="coffee-curve-top"></div>
+            <h2>Beautiful Weddings, <em>Breathtaking Films</em></h2>
+        </div>
+
+        <section id="motion" class="motion-section">
+            <div class="films-header" style="text-align: center; margin-bottom: 50px;">
+                <span class="section-sub">CINEMATIC MASTERPIECES</span>
+            </div>
+            <div class="films-grid" id="films-dynamic"></div>
+            <h3
+                style="font-family:'Playfair Display'; text-align:center; margin-top:50px; font-size:1.8rem; color:var(--primary-text);">
+                Trending Reels</h3>
+            <div class="reels-strip" id="reels-dynamic"></div>
+        </section>
+
+        <section id="invites" class="invite-section">
+
+            <div class="invite-curve-top">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path
+                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                        class="shape-fill"></path>
+                </svg>
+            </div>
+
+            <h2 class="section-head">Digital <span
+                    style="color:var(--accent-gold); font-style:italic;">Masterpieces</span>
+            </h2>
+            <p class="section-desc" style="max-width:600px; margin:0 auto 60px auto;">Step into our theater. Explore
+                exquisitely customized invitations and cinematic highlights.</p>
+
+            <div class="premium-invites-grid">
+
+                <!-- Card 1: 2D Cinematic -->
+                <div class="premium-invite-card" onclick="openCineModal('2d')">
+                    <div class="invite-card-ambient-glow"></div>
+                    <div class="invite-card-image-wrapper">
+                        <img id="thumb-2d" src="https://placehold.co/400x600/1a1a1a/c5a059?text=2D+Magic"
+                            alt="2D Invitation Designs" class="invite-card-img">
+                        <div class="invite-card-image-overlay"></div>
+                        <div class="invite-card-play-btn"><i class="fas fa-play"></i></div>
                     </div>
-                    <div class="phone-notch"></div>
-                </div>
-                <div class="invite-title">Royal Motion</div>
-            </div>
-            <div style="text-align: center;">
-                <div class="phone-mockup" onclick="playInvite('teaser')">
-                    <div class="phone-screen" style="background-image: url('https://images.unsplash.com/photo-1621621667797-e06afc21085c?q=80&w=1887&auto=format&fit=crop');">
-                        <div class="screen-overlay"><i class="fas fa-stopwatch fa-2x" style="color:var(--accent-gold);"></i><span style="display:block; margin-top:10px; font-family:'Playfair Display'; font-size:1.2rem;">Teaser</span></div>
+                    <div class="invite-card-content">
+                        <span class="invite-card-badge">THE CLASSIC</span>
+                        <h3 class="invite-card-title">2D Cinematic</h3>
+                        <p class="invite-card-desc">Timeless, elegant, and perfectly scored.</p>
                     </div>
-                    <div class="phone-notch"></div>
                 </div>
-                <div class="invite-title">Save The Date</div>
+
+                <!-- Card 2: 3D Immersive -->
+                <div class="premium-invite-card" onclick="openCineModal('3d')">
+                    <div class="invite-card-ambient-glow"></div>
+                    <div class="invite-card-image-wrapper">
+                        <img id="thumb-3d" src="https://placehold.co/400x600/1a1a1a/c5a059?text=3D+Magic"
+                            alt="3D Invitation Designs" class="invite-card-img">
+                        <div class="invite-card-image-overlay"></div>
+                        <div class="invite-card-play-btn"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="invite-card-content">
+                        <span class="invite-card-badge">THE ROYALTY</span>
+                        <h3 class="invite-card-title">3D Immersive</h3>
+                        <p class="invite-card-desc">Breathtaking virtual dimensions.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Teasers -->
+                <div class="premium-invite-card teaser-card" onclick="openCineModal('teaser')">
+                    <div class="invite-card-ambient-glow"></div>
+                    <div class="invite-card-image-wrapper">
+                        <img id="thumb-teaser" src="https://placehold.co/800x450/1a1a1a/c5a059?text=Cinematic+Teasers"
+                            alt="Teaser Preview" class="invite-card-img">
+                        <div class="invite-card-image-overlay"></div>
+                        <div class="invite-card-play-btn"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="invite-card-content">
+                        <span class="invite-card-badge">THE PREMIERE</span>
+                        <h3 class="invite-card-title">Cinematic Teasers</h3>
+                        <p class="invite-card-desc">The heartbeat of your wedding.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <span class="section-sub">SELECTED WORKS</span>
+                <h2 class="section-head">Signature Stories</h2>
+            </div>
+            <div class="masonry-grid" id="photo-grid-dynamic"></div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="contact-img"></div>
+            <div class="contact-form">
+                <span class="section-sub">LET'S CREATE MAGIC</span>
+                <h2 class="section-head" style="margin-bottom:10px;">Get us to shoot you!</h2>
+                <p style="margin-bottom:40px; color:#777;">Fill this form and we'll connect on WhatsApp.</p>
+                <form id="waForm">
+                    <input type="text" id="waName" class="c-input" placeholder="Your Name (Required)">
+                    <input type="text" id="waMobile" class="c-input" placeholder="Phone Number (Required)">
+                    <input type="text" id="waDate" class="c-input" placeholder="Event Date & Venue">
+                    <button type="button" onclick="submitToWA()" class="c-btn">SEND ENQUIRY</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- UPDATED CLIENT PORTAL SECTION -->
+        <section id="client-portal"
+            style="padding: 100px 5%; background: var(--bg-cream); text-align: center; position: relative; overflow: hidden;">
+            <!-- The Vault Gate (Login Screen) -->
+            <div id="login-vault-gate" style="padding: 60px 0;">
+                <i class="fas fa-key fa-2x"
+                    style="color:var(--accent-gold); margin-bottom:20px; text-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);"></i>
+                <h2 class="section-head" style="font-size:2.2rem; margin-bottom: 10px;">Client Lounge</h2>
+                <p
+                    style="color: var(--text-muted); font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 40px;">
+                    Private Access Only</p>
+
+                <div
+                    style="max-width: 380px; margin: 0 auto; padding: 40px 30px; border-radius: 12px; background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(197, 160, 89, 0.4); box-shadow: 0 20px 50px rgba(168, 155, 141, 0.2);">
+
+                    <div style="position: relative; max-width: 320px; margin: 0 auto;">
+                        <input type="password" id="vip-code-input" placeholder="Enter Access Code" class="c-input"
+                            style="text-align: center; font-size: 1rem; letter-spacing: 4px; font-weight: 600; color: var(--coffee-dark); border-bottom-color: rgba(197, 160, 89, 0.5); padding-right: 45px;">
+                        <i id="togglePasswordEye" class="fas fa-eye-slash"
+                            style="position: absolute; right: 12px; top: 12px; cursor: pointer; color: var(--accent-gold); opacity: 0.7; transition: 0.3s;"></i>
+                    </div>
+
+                    <button id="vip-login-btn" class="c-btn" style="margin-top: 10px; border-radius: 50px;">UNLOCK
+                        VAULT</button>
+                </div>
+            </div>
+
+            <!-- The Royal Lounge (Private Gallery List) -->
+            <div id="client-lounge-section" style="display: none;">
+                <div class="lounge-header">
+                    <div class="lounge-welcome">
+                        <span class="section-sub">WELCOME BACK</span>
+                        <h2 id="lounge-client-name" class="section-head" style="font-size: 2.5rem; margin-bottom: 0;">
+                        </h2>
+                        <p style="color: #888; letter-spacing: 1px; margin-top: 10px;">Select a gallery to view your
+                            memories.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="n-btn primary" onclick="viewClientGuestList()"
+                            style="padding: 10px 15px; font-size: 14px;"><i class="fas fa-users"></i> Guest
+                            List</button>
+                        <button class="logout-vault-btn" onclick="exitVault()"><i class="fas fa-sign-out-alt"></i> Exit
+                            Vault</button>
+                    </div>
+                </div>
+
+                <div id="client-lounge-grid" class="lounge-grid"></div>
+
+                <!-- Guest List Widget Overlay -->
+                <div id="guestListWidget" class="lightbox n-modal" style="display:none; z-index:9999;">
+                    <div class="n-modal-content" style="max-width: 500px; background: #111; border: 1px solid #333;">
+                        <h3 style="color:#c5a059; margin-bottom: 20px;"><i class="fas fa-clipboard-list"></i> Guest
+                            Arrival List</h3>
+                        <div id="guestListContainer"
+                            style="max-height: 400px; overflow-y: auto; text-align: left; color: #ccc;">
+                            <!-- List will populate here -->
+                        </div>
+                        <button class="n-btn outline mt-4 w-100"
+                            onclick="document.getElementById('guestListWidget').style.display='none'">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <a href="https://wa.me/916350095221" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <button id="sendFloat" onclick="sendSelection()">Send Selection (<span id="selCount">0</span>) <i
+                class="fab fa-whatsapp"></i></button>
+
+        <!-- Video Lightbox (YouTube) -->
+        <div id="vidLB" class="lightbox" onclick="closeLB()">
+            <div class="lightbox-content">
+                <span class="close-lb" onclick="closeLB()">✕</span>
+                <iframe id="lbFrame" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
-    </section>
 
-    <section id="gallery" class="gallery-section">
-        <div style="text-align: center; margin-bottom: 50px;">
-            <span class="section-sub">SELECTED WORKS</span>
-            <h2 class="section-head">Signature Stories</h2>
+        <!-- Image Lightbox -->
+        <!-- Sanitised Premium Lightbox -->
+        <div id="imgLB" class="lightbox premium-lightbox" onclick="closeImgLB()">
+            <div id="lightboxUI" class="lightbox-ui">
+                <div class="lb-arrow lb-prev" onclick="event.stopPropagation(); changePhoto(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="lb-arrow lb-next" onclick="event.stopPropagation(); changePhoto(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <span class="close-lb" onclick="event.stopPropagation(); closeImgLB()">
+                    <i class="fas fa-times"></i>
+                </span>
+            </div>
+            <div class="lightbox-content" onclick="event.stopPropagation()">
+                <div id="lbImgWrapper">
+                    <img id="lbImg" src="" alt="Full size preview">
+                </div>
+                <!-- Selection actions (used by Smart Selection gallery) -->
+                <div id="lbActions" style="display:none; justify-content:center; padding:12px; gap:15px;">
+                    <button id="lbHeart" onclick="event.stopPropagation(); toggleHeart()" class="lb-action-btn"
+                        style="background:transparent; border:1.5px solid rgba(197,160,89,0.5); color:#c5a059; padding:8px 20px; border-radius:30px; cursor:pointer; font-size:14px; display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-heart"></i> <span id="lbHeartTxt">Select</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="masonry-grid" id="photo-grid-dynamic"></div>
-    </section>
 
-    <section id="contact" class="contact-section">
-        <div class="contact-img"></div>
-        <div class="contact-form">
-            <span class="section-sub">LET'S CREATE MAGIC</span>
-            <h2 class="section-head" style="margin-bottom:10px;">Get us to shoot you!</h2>
-            <p style="margin-bottom:40px; color:#777;">Fill this form and we'll connect on WhatsApp.</p>
-            <form id="waForm">
-                <input type="text" id="waName" class="c-input" placeholder="Your Name (Required)">
-                <input type="text" id="waMobile" class="c-input" placeholder="Phone Number (Required)">
-                <input type="text" id="waDate" class="c-input" placeholder="Event Date & Venue">
-                <button type="button" onclick="submitToWA()" class="c-btn">SEND ENQUIRY</button>
-            </form>
+
+        <!-- 🌟 THE ROYAL GUEST BOOK (Luxury RSVP Experience) -->
+        <div id="guestRSVPModal" class="luxury-rsvp-overlay" style="display:none;">
+            <div class="luxury-rsvp-container" onclick="event.stopPropagation()">
+                <div class="rsvp-gold-rings">
+                    <span class="ring-left"></span>
+                    <span class="ring-right"></span>
+                </div>
+                
+                <div class="rsvp-inner">
+                    <div class="rsvp-floral-top">✦ ✦ ✦</div>
+                    
+                    <h2 class="rsvp-main-title">You're Invited</h2>
+                    <p class="rsvp-subtitle">to a celebration of love & togetherness</p>
+                    
+                    <div class="rsvp-couple-banner">
+                        <span id="rsvpCoupleName" class="couple-name">Priya & Rahul</span>
+                    </div>
+                    
+                    <p class="rsvp-message">
+                        Please share your details below to step into our world.<br>
+                        <span class="rsvp-warm-text">We've saved a special place just for you.</span>
+                    </p>
+                    
+                    <div class="rsvp-form-group">
+                        <label for="rsvpName" class="rsvp-label">Your Full Name <span class="required-star">*</span></label>
+                        <div class="rsvp-input-wrapper">
+                            <i class="fas fa-user rsvp-input-icon"></i>
+                            <input type="text" id="rsvpName" class="rsvp-input" placeholder="e.g., Priya Sharma" required>
+                        </div>
+                    </div>
+                    
+                    <div class="rsvp-form-group">
+                        <label for="rsvpPhone" class="rsvp-label">Phone Number <span class="optional-badge">Optional</span></label>
+                        <div class="rsvp-input-wrapper">
+                            <i class="fas fa-phone-alt rsvp-input-icon"></i>
+                            <input type="tel" id="rsvpPhone" class="rsvp-input" placeholder="For any updates">
+                        </div>
+                    </div>
+                    
+                    <div class="rsvp-form-group">
+                        <label for="rsvpArrival" class="rsvp-label">When will you join us? <span class="required-star">*</span></label>
+                        <div class="rsvp-input-wrapper">
+                            <i class="fas fa-calendar-alt rsvp-input-icon"></i>
+                            <input type="date" id="rsvpArrival" class="rsvp-input" required>
+                        </div>
+                    </div>
+                    
+                    <button class="rsvp-submit-btn" onclick="submitGuestRSVP()">
+                        <i class="fas fa-gem"></i> Enter the Celebration
+                    </button>
+                    
+                    <p class="rsvp-footer-note">
+                        <i class="fas fa-lock"></i> Your presence is our greatest gift.
+                    </p>
+                </div>
+            </div>
         </div>
-    </section>
 
-    <section id="client-portal" style="padding: 100px 5%; background: var(--bg-cream); text-align: center;">
-        <i class="fas fa-lock fa-2x" style="color:var(--coffee-dark); margin-bottom:20px;"></i>
-        <h2 class="section-head" style="font-size:2rem;">Client Lounge</h2>
-        <div style="max-width: 350px; margin: 0 auto;">
-            <input type="text" id="clientCodeInput" placeholder="Enter Access Code" class="c-input" style="text-align: center; font-size: 1.1rem; letter-spacing: 2px;">
-            <button onclick="unlockClientGallery()" class="c-btn" style="background: var(--accent-gold);">ENTER GALLERY</button>
+        <!-- Video Lightbox (Universal) - UPGRADED -->
+        <div id="videoModal" class="lightbox netflix-video-modal" onclick="closeVideoModal()">
+            <div id="luxury-video-box" class="lightbox-content luxury-video-content" onclick="event.stopPropagation()">
+
+                <div id="videoUI" class="video-ui-layer">
+                    <div class="video-top-nav">
+                        <button class="v-back-btn" onclick="closeVideoModal()">
+                            <i class="fas fa-chevron-left"></i> <span>CLOSE THEATER</span>
+                        </button>
+                    </div>
+                    <div class="mobile-swipe-hint">
+                        <div class="swipe-bar"></div>
+                        <span>Pull down to close</span>
+                    </div>
+                </div>
+
+                <div id="rsvpWelcomeOverlay" class="video-overlay-msg"
+                    style="display:none; position: absolute; inset:0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index:9999; align-items: center; justify-content: center; flex-direction: column; opacity: 1; transition: opacity 1.5s ease;">
+                    <i class="fas fa-crown"
+                        style="color: #c5a059; font-size: 3rem; margin-bottom: 25px; filter: drop-shadow(0 0 10px rgba(197,160,89,0.5));"></i>
+                    <h2 id="rsvpWelcomeText"
+                        style="font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); text-align: center;">
+                        Welcome!</h2>
+                    <p
+                        style="color: #c5a059; font-family: 'Montserrat', sans-serif; letter-spacing: 4px; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; text-align: center;">
+                        Experience The Magic</p>
+                </div>
+
+                <div id="rsvpThankYouOverlay" class="video-overlay-msg"
+                    style="display:none; position: absolute; inset:0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index:9999; align-items: center; justify-content: center; flex-direction: column; opacity: 0; transition: opacity 1.5s ease;">
+                    <h2
+                        style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); text-align: center; max-width: 80%;">
+                        Thank you for joining us!</h2>
+                    <p
+                        style="margin-top: 15px; font-style: italic; color: #c5a059; font-family: 'Montserrat', sans-serif; font-size: 1rem;">
+                        — Vinayak Studio —</p>
+                    <div class="play-btn-overlay gold-glow mt-4 mx-auto"
+                        style="position:relative; width: fit-content; padding: 12px 30px; border-radius: 30px; cursor: pointer; margin-top:40px; background: rgba(197, 160, 89, 0.2); border: 1px solid rgba(197, 160, 89, 0.5); color: #c5a059; font-weight: bold; transition: all 0.3s;"
+                        onclick="closeVideoModal(true)" onmouseover="this.style.background='rgba(197,160,89,0.4)'"
+                        onmouseout="this.style.background='rgba(197,160,89,0.2)'">
+                        <i class="fas fa-times" style="margin-right:8px;"></i> Close Theater
+                    </div>
+                </div>
+
+                <div id="videoWrapper" class="video-physics-wrapper">
+                    <div id="videoSwipeShield" class="video-swipe-shield"></div>
+                    <iframe id="universalPlayerIframe" width="100%" height="100%" frameborder="0"
+                        allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+                </div>
+
+            </div>
         </div>
-        <div id="clientResultArea" style="margin-top: 50px;"></div>
-    </section>
 
-    <footer>
+
+        <!-- Container for single content (Immersive Theater) -->
+        <div id="vipSingleResult"
+            style="display: none; margin-top: 60px; text-align: center; max-width: 1000px; margin-left: auto; margin-right: auto; padding: 20px;">
+        </div>
+
+        <div id="vipNetflixModal" class="netflix-modal" style="display: none;">
+            <span class="netflix-close-btn" onclick="exitVault()"><i class="fas fa-times"></i></span>
+
+            <div class="netflix-modal-content">
+                <div id="netflix-hero-bg" class="premium-hero-container">
+                    <div class="premium-hero-image" id="hero-image-layer"></div>
+                    <div class="cinematic-dust-overlay"></div>
+                    <div class="hero-vignette-deep"></div>
+                    <div class="premium-hero-content" id="hero-content-layer">
+                        <div class="premium-studio-brand reveal-item" style="--delay: 0.1s">
+                            <div class="ps-monogram-shield" id="dynamic-monogram">V</div>
+                            <div class="ps-text-group">
+                                <span class="ps-name" id="dynamic-studio-name">VINAYAK STUDIO</span>
+                                <span class="ps-tagline">A CINEMATIC ORIGINAL</span>
+                            </div>
+                        </div>
+                        <h1 id="vipModalTitle" class="premium-hero-title reveal-item" style="--delay: 0.3s">KUMAR'S
+                            STORY
+                        </h1>
+                        <p id="netflix-hero-desc" class="premium-hero-desc reveal-item" style="--delay: 0.5s">
+                            Experience the cinematic magic captured at your celebration. Relive your legacy.
+                        </p>
+                        <div class="premium-hero-actions reveal-item" style="--delay: 0.7s">
+                            <button class="btn-play-luxury" onclick="playMainFeature()">
+                                <i class="fas fa-play"></i> <span>Play Feature</span>
+                            </button>
+                            <button class="btn-info-luxury">
+                                <i class="fas fa-info-circle"></i> <span>The Vault</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cinematic-curve-divider">
+                    <div class="curve-glow"></div>
+                </div>
+
+                <div id="netflix-rails" class="netflix-rails-container">
+                    <div id="rail-invitation" style="display: none;">
+                        <h3 class="netflix-rail-title">Digital Invitations</h3>
+                        <div class="netflix-rail-scroll portrait-n" id="content-invitation"></div>
+
+                        <!-- 🆕 Inline Guest List Container (Initially Hidden) -->
+                        <div id="inlineGuestListContainer"
+                            style="display: none; margin-top: 20px; padding: 20px; background: #0a0a0a; border-radius: 16px; border: 1px solid #c5a059;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h4 style="color: #c5a059; font-family: 'Playfair Display'; margin: 0;">
+                                    <i class="fas fa-users"></i> Guest Arrival List
+                                </h4>
+                                <button onclick="toggleInlineGuestList()"
+                                    style="background: none; border: none; color: #c5a059; cursor: pointer; font-size: 20px;">&times;</button>
+                            </div>
+                            <div id="inlineGuestListContent" style="max-height: 300px; overflow-y: auto; color: #ccc;">
+                                <!-- Guest list will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rail-reels" style="display: none;">
+                        <h3 class="netflix-rail-title">📱 Trending Reels</h3>
+                        <div class="netflix-rail-scroll portrait-n" id="content-reels"></div>
+                    </div>
+
+                    <div id="rail-cinema" style="display: none;">
+                        <h3 class="netflix-rail-title">🎬 Cinematic Highlights & Films</h3>
+                        <div class="netflix-rail-scroll landscape-n" id="content-cinema"></div>
+                    </div>
+
+                    <div id="rail-wedding" style="display: none;">
+                        <h3 class="netflix-rail-title">💍 Wedding Films & Ceremonies</h3>
+                        <div class="netflix-rail-scroll landscape-n" id="content-wedding"></div>
+                    </div>
+                    <div id="rail-gallery" style="display: none;">
+                        <h3 class="netflix-rail-title">Event Galleries</h3>
+                        <div class="netflix-rail-scroll portrait-n" id="content-gallery"></div>
+                    </div>
+                    <div id="rail-album" style="display: none;">
+                        <h3 class="netflix-rail-title">📖 Digital Premium Album</h3>
+                        <div class="netflix-rail-scroll book-n" id="content-album"></div>
+                    </div>
+                    <div id="rail-vault" style="display: none;">
+                        <h3 class="netflix-rail-title">The Vault (Raw Data)</h3>
+                        <div class="netflix-rail-scroll vault-n" id="content-vault"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expanded Modal (relocated to prevent clipping) -->
+        <!-- THE PREMIERE ROOM (VIP CINEMATIC MODAL) -->
+        <div id="cineModal" class="premium-cine-modal">
+            <div class="premium-cine-modal-overlay" onclick="closeCineModal()"></div>
+            <div class="premium-cine-modal-content">
+                <div class="premium-cine-header">
+                    <h2 id="modalDynamicTitle" class="premium-cine-title">THE COLLECTION</h2>
+                    <button class="premium-cine-close" onclick="closeCineModal()"><i class="fas fa-times"></i></button>
+                </div>
+
+                <div class="premium-cine-scroll-area">
+                    <div id="cineCardContainer" class="premium-cine-grid">
+                        <!-- Advanced Cinematic Posters Injected dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Local JavaScript -->
+        <!-- Dependencies for Digital Album -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+
+        <!-- ============================================= -->
+        <!-- 🚀 VIP GUEST LOUNGE – DEDICATED UI (NO RACE)   -->
+        <!-- ============================================= -->
+        <div id="exclusive-guest-lounge" style="display: none; background: #050505; min-height: 100vh;">
+            <div class="g-lounge-nav">
+                <div></div> <!-- Spacer for minimal look -->
+                <div class="g-nav-actions">
+                    <div class="luxury-access-capsule">
+                        <span class="capsule-badge">
+                            <i class="fas fa-crown crown-pulse"></i>
+                            <span class="shimmer-text">GUEST OF HONOR</span>
+                        </span>
+                        <button class="capsule-btn" onclick="exitGuestLounge()">
+                            EXPLORE STUDIO <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="premium-hero-container">
+                <div class="premium-hero-image" id="g-hero-bg"></div>
+                <div class="cinematic-dust-overlay"></div>
+                <div class="hero-vignette-deep"></div>
+
+                <div class="premium-hero-content" style="bottom: 12%;">
+                    <div class="premium-studio-brand reveal-item active" style="--delay: 0.1s">
+                        <div class="ps-monogram-shield" id="g-monogram">V</div>
+                        <div class="ps-text-group">
+                            <span class="ps-name" id="g-studio-name">VINAYAK STUDIO</span>
+                            <span class="ps-tagline">A CINEMATIC ORIGINAL</span>
+                        </div>
+                    </div>
+
+                    <span class="g-eyebrow" id="g-eyebrow" style="text-align: left; margin-bottom: 8px;">✦ A GLIMPSE OF
+                        MAGIC ✦</span>
+                    <h1 id="g-title" class="premium-hero-title reveal-item active"
+                        style="--delay: 0.3s; font-size: 3.2rem;">An Exclusive Memory</h1>
+                    <p id="g-message" class="premium-hero-desc reveal-item active"
+                        style="--delay: 0.5s; max-width: 600px; text-align: left;">
+                        Curated exclusively for you.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cinematic-curve-divider">
+                <div class="curve-glow"></div>
+            </div>
+
+            <div id="g-invitation-container" style="display: none; justify-content: center; margin: 20px 0 50px;">
+                <div id="g-invitation-content" class="netflix-rail-scroll portrait-n"
+                    style="overflow: visible; display: flex; justify-content: center; width: 100%;"></div>
+            </div>
+
+            <div class="netflix-rails-container" style="padding-top: 10px; padding-left: 4%; padding-right: 4%;">
+
+                <div id="g-rail-portrait-vids" style="display: none;">
+                    <h3 class="netflix-rail-title">Digital Invitation</h3>
+                    <div class="netflix-rail-scroll portrait-n" id="g-content-portrait-vids"></div>
+                </div>
+
+                <div id="g-rail-cinema" style="display: none;">
+                    <h3 class="netflix-rail-title">Cinematic Highlights & Films</h3>
+                    <div class="netflix-rail-scroll landscape-n" id="g-content-cinema"></div>
+                </div>
+
+                <div id="g-rail-wedding" style="display: none;">
+                    <h3 class="netflix-rail-title">Wedding Films & Ceremonies</h3>
+                    <div class="netflix-rail-scroll landscape-n" id="g-content-wedding"></div>
+                </div>
+
+                <div id="g-rail-gallery" style="display: none;">
+                    <h3 class="netflix-rail-title">Curated Galleries</h3>
+                    <div class="netflix-rail-scroll portrait-n" id="g-content-gallery"></div>
+                </div>
+
+                <div id="g-rail-album" style="display: none;">
+                    <h3 class="netflix-rail-title">Digital Premium Album</h3>
+                    <div class="netflix-rail-scroll book-n" id="g-content-album"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Main Application Logic (v2.5) -->
+        <script src="script.js?v=2.2"></script>
+
+    </main>
+
+    <!-- 🚀 LUXURY FOOTER (Golden Monogram + Concierge + No Jump) -->
+    <footer class="luxury-footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <h2>Vinayak Studio</h2>
-                <p>EST. 2004 • NEEM KA THANA</p>
+                <div class="footer-monogram">V</div>
+                <h2 class="footer-studio-name">VINAYAK STUDIO</h2>
+                <div class="footer-est-line">
+                    <span class="line"></span>
+                    <span class="text">EST. 2004 • CRAFTING LEGACIES</span>
+                    <span class="line"></span>
+                </div>
             </div>
             <div class="footer-nav">
                 <div class="footer-links-inline">
                     <a href="#motion">Films</a>
-                    <a href="#gallery">Gallery</a>
+                    <a href="#gallery">Stories</a>
                     <a href="#invites">Invites</a>
-                    <a href="#contact">Book</a>
+                    <a href="#client-portal">The Vault</a>
                 </div>
+            </div>
+            <div class="footer-contact">
+                <p class="concierge-title">PRIVATE CONCIERGE</p>
+                <a href="tel:+916350095221" class="contact-link"><i class="fas fa-phone-alt"></i> +91 63500 95221</a>
+                <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Neem Ka Thana, Rajasthan</a>
                 <div class="footer-socials">
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-youtube"></i></a>
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                 </div>
             </div>
-            <div class="footer-contact">
-                <a href="tel:+916350095221"><i class="fas fa-phone-alt"></i> +91 63500 95221</a>
-                <a href="#"><i class="fas fa-map-marker-alt"></i> Indira Tower, SBI Gali</a>
-            </div>
         </div>
-        <div class="copyright">© 2026 Vinayak Studio. Crafted for Royalty.</div>
+        <div class="footer-bottom-bar">
+            <div class="copyright">© 2026 Vinayak Studio. Capturing Magic Since 2004.</div>
+            <a href="#" class="footer-designer">Crafted for Royalty</a>
+        </div>
     </footer>
 
-    <a href="https://wa.me/916350095221" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <button id="sendFloat" onclick="sendSelection()">Send Selection (<span id="selCount">0</span>) <i class="fab fa-whatsapp"></i></button>
+    <!-- Flipbook Modal - Hamesha available rahega (Moved to bottom for stacking) -->
+    <div id="flipbookModal" class="flipbook-modal" style="opacity: 0; display: none;">
+        <audio id="albumMusic" loop>
+            <source src="assets/sound/album_bg.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="pageFlipSound">
+            <source src="assets/sound/turning-page-in-a-book-419580.mp3" type="audio/mpeg">
+        </audio>
 
-    <!-- Video Lightbox -->
-    <div id="vidLB" class="lightbox" onclick="closeLB()">
-        <div class="lightbox-content">
-            <span class="close-lb" onclick="closeLB()">✕</span>
-            <iframe id="lbFrame" width="100%" height="100%" frameborder="0"></iframe>
+        <div class="flipbook-container" id="fbContainerWrapper">
+            <div id="rotateDeviceOverlay" class="rotate-overlay" style="display: none;">
+                <div class="rotate-icon-wrapper">
+                    <i class="fas fa-mobile-alt rotate-icon anim-rotate"></i>
+                </div>
+                <p>For the best cinematic experience, please rotate your device to landscape</p>
+            </div>
+            <button class="close-flipbook" onclick="closeFlipbook()">&times;</button>
+            <button id="musicToggleBtn" class="music-toggle" onclick="toggleMusic()"><i
+                    class="fas fa-volume-up"></i></button>
+            <div id="flipbook" class="magazine"></div>
         </div>
     </div>
+    <!-- 🌟 AI CAMERA MODAL (Luxury Edition) -->
+    <div id="aiCameraModal" class="ai-camera-modal" style="display:none;">
+        <div class="ai-camera-container">
+            <button class="ai-camera-close" onclick="closeAICamera()">&times;</button>
+            
+            <!-- Glowing Ring & Video Preview -->
+            <div class="ai-camera-preview-wrapper">
+                <div class="ai-glowing-ring"></div>
+                <video id="aiCameraVideo" autoplay playsinline></video>
+                <canvas id="aiCameraCanvas" style="display:none;"></canvas>
+                <div class="ai-camera-overlay-text">FIND YOUR PHOTO</div>
+            </div>
+            
+            <!-- Guest Info Fields (Name + Phone) -->
+            <div class="ai-guest-fields" style="padding: 0 20px; margin-bottom: 10px;">
+                <input type="text" id="aiGuestName" placeholder="Your Name (required)" 
+                    style="width:100%; padding:10px 15px; border-radius:25px; border:1px solid rgba(197,160,89,0.4); background:rgba(255,255,255,0.05); color:#fff; font-size:14px; margin-bottom:8px; outline:none; font-family:'Montserrat',sans-serif; text-align:center;"
+                >
+                <input type="tel" id="aiGuestPhone" placeholder="Phone Number (optional, for WhatsApp)" 
+                    style="width:100%; padding:10px 15px; border-radius:25px; border:1px solid rgba(197,160,89,0.2); background:rgba(255,255,255,0.03); color:#ccc; font-size:13px; outline:none; font-family:'Montserrat',sans-serif; text-align:center;"
+                >
+            </div>
 
-    <!-- Image Lightbox -->
-    <div id="imgLB" class="lightbox" onclick="closeImgLB()">
-        <div class="lb-arrow lb-prev" onclick="event.stopPropagation(); changePhoto(-1)">❮</div>
-        <div class="lb-arrow lb-next" onclick="event.stopPropagation(); changePhoto(1)">❯</div>
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <span class="close-lb" onclick="closeImgLB()">✕</span>
-            <img id="lbImg" src="">
-            <div class="lb-actions" id="lbActions" style="display:none;">
-                <button id="lbHeart" class="lb-btn" onclick="toggleHeart()"><i class="fas fa-heart"></i> <span id="lbHeartTxt">Select</span></button>
+            <!-- Camera Controls -->
+            <div class="ai-camera-controls">
+                <button class="ai-capture-btn" onclick="captureAndSearch()">
+                    <i class="fas fa-camera"></i> Capture
+                </button>
+                <button class="ai-switch-btn" onclick="switchCamera()" id="switchCameraBtn" style="display:none;">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="aiSearchLoader" class="ai-search-loader" style="display:none;">
+                <div class="ai-loader-ring"></div>
+                <p>Scanning faces...</p>
+            </div>
+            
+            <!-- Results Gallery (Shown after search) -->
+            <div id="aiResultsContainer" class="ai-results-container" style="display:none;">
+                <h3>Your Magical Moments</h3>
+                <div id="aiResultsGrid" class="ai-results-grid"></div>
+                <button class="ai-new-search-btn" onclick="resetAICamera()">New Search</button>
+            </div>
+
+            <!-- Pending State (No match yet) -->
+            <div id="aiPendingContainer" style="display:none; text-align:center; padding:30px 20px;">
+                <div style="font-size:3rem; margin-bottom:15px;">✨</div>
+                <h3 style="color:#c5a059; font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:10px;">Aapki Tasveerein Taiyaar Ho Rahi Hain</h3>
+                <p style="color:#aaa; font-size:0.85rem; line-height:1.5; max-width:300px; margin:0 auto 20px;">Jaise hi aapki photos ready hongi, hum aapko WhatsApp par bata denge!</p>
+                <button class="ai-new-search-btn" onclick="resetAICamera()">Try Again</button>
             </div>
         </div>
     </div>
 
-    <!-- Local JavaScript -->
-    <script src="/api-config.js"></script>
-    <script src="script.js"></script>
+    <!-- 💎 Luxury Floating Camera Button (Lounge Only) -->
+    <div id="floatingCameraBtn" class="floating-camera-btn" onclick="openAICamera()">
+        <div class="camera-btn-ring"></div>
+        <div class="camera-btn-content">
+            <span class="camera-btn-icon"><i class="fas fa-camera"></i> <span class="sparkle">✨</span></span>
+            <span class="camera-btn-text">Find My Photos</span>
+        </div>
+    </div>
+    </div>
+
+    <!-- 💖 Selection Floating Bar -->
+    <div id="selectionStatusBar" class="selection-status-bar" style="display: none;">
+        <div class="selection-info">
+            <i class="fas fa-heart text-red-500"></i>
+            <span id="selectionCountText">0 Photos Selected</span>
+        </div>
+        <button class="selection-submit-btn" onclick="openSelectionSubmitModal()">Submit Selection</button>
+    </div>
+
+    <!-- Selection Submit Modal -->
+    <div id="selectionSubmitModal" class="selection-submit-modal" style="display: none;">
+        <div class="selection-modal-content">
+            <button class="selection-close-btn" onclick="closeSelectionSubmitModal()">&times;</button>
+            <h3 style="color:#c5a059; font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:10px;">Send Your Selection</h3>
+            <p style="color:#aaa; font-size:0.85rem; line-height:1.5; margin-bottom: 20px;">Review your chosen photos before sending them to the studio.</p>
+            
+            <input type="text" id="selectionGuestName" placeholder="Your Name" class="selection-input">
+            <input type="tel" id="selectionGuestPhone" placeholder="Your Phone (Optional)" class="selection-input">
+            
+            <div class="selection-preview-grid" id="selectionPreviewGrid"></div>
+            
+            <button class="selection-confirm-btn" onclick="confirmSubmitSelection()" id="confirmSubmitSelectionBtn">
+                Confirm & Send (<span id="finalSelectionCount">0</span>)
+            </button>
+        </div>
+    </div>
 </body>
+
 </html>
