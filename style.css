@@ -7467,3 +7467,18 @@ body.selection-mode-active .n-card .selection-heart-btn {
     line-height: 1.6;
 }
 .ai-no-results .no-results-icon { font-size: 2.8rem; display: block; margin-bottom: 10px; opacity: 0.4; }
+/* Prevent default browser long-press menu and text selection for AI search results */
+.ai-result-card, 
+.ai-result-card img {
+    -webkit-touch-callout: none !important; /* iOS Safari */
+    -webkit-user-select: none !important;  /* Safari */
+    -khtml-user-select: none !important;   /* Konqueror HTML */
+    -moz-user-select: none !important;    /* Firefox */
+    -ms-user-select: none !important;     /* Internet Explorer/Edge */
+    user-select: none !important;          /* Non-prefixed version, currently supported by Chrome and Opera */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ai-result-card {
+    -webkit-user-drag: none;
+}

@@ -227,11 +227,12 @@ function checkGuestTrigger(actionFunc) {
         window._pendingGuestAction = actionFunc;
         const rsvpModal = document.getElementById('guestRSVPModal');
         if (rsvpModal) {
-            rsvpModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            return true;
+            // rsvpModal.style.display = 'flex';
+            // document.body.style.overflow = 'hidden';
+            // return true;
         }
     }
+    // RSVP trap disabled in favor of AI Camera lead generation
     return false;
 }
 
@@ -1389,6 +1390,13 @@ async function playLuxuryVideo(url, type = null) {
     setTimeout(() => {
         modal.classList.add('is-active');
         resetVideoIdleTimer();
+        
+        // 📊 Trigger Video Delivery Analytic
+        const clientCodeToTrack = window.clientCode || localStorage.getItem('clientCode');
+        if (clientCodeToTrack) {
+            // Non-blocking fire-and-forget stats ping
+            fetch(`${API_URL}/api/clients/${clientCodeToTrack}/stats/video-view`, { method: 'POST' }).catch(()=>console.log('Stats ping failed'));
+        }
     }, 10);
 }
 
@@ -1589,9 +1597,14 @@ function openImgLB(index) {
         resetLightboxIdleTimer();
     }, 10);
     document.body.style.overflow = 'hidden';
+
+    // 🔙 Back-Button Bug Fix
+    if (window.location.hash !== '#view') {
+        history.pushState({ modalOpen: true }, "", "#view");
+    }
 }
 
-function closeImgLB() {
+function closeImgLB(fromPopState = false) {
     const lb = document.getElementById('imgLB');
     if (!lb) return;
     lb.classList.remove('is-active');
@@ -1601,8 +1614,23 @@ function closeImgLB() {
         clearTimeout(lightboxIdleTimer);
         const wrapper = document.getElementById('lbImgWrapper');
         if (wrapper) wrapper.style.transform = '';
+        
+        // If closed manually (X button), step back in history to clean up "#view" hash
+        if (!fromPopState && window.location.hash === '#view') {
+            history.back();
+        }
     }, 600);
 }
+
+// 🌐 Protect against Back Button completely closing the site
+window.addEventListener('hashchange', () => {
+    if (window.location.hash !== '#view') {
+        const lb = document.getElementById('imgLB');
+        if (lb && lb.style.display === 'flex') {
+            closeImgLB(true); // pass true to indicate it's from popState
+        }
+    }
+});
 
 function changePhoto(direction) {
     idx += direction;
@@ -3886,6 +3914,14 @@ async function captureAndSearch() {
     const guestFields = document.querySelector('.ai-guest-fields');
     const captureBtn = document.querySelector('.ai-capture-btn');
 
+    const guestName = document.getElementById('aiGuestName')?.value.trim() || '';
+    const guestPhone = document.getElementById('aiGuestPhone')?.value.trim() || '';
+
+    if (_aiCaptureStep === 0 && (!guestName || !guestPhone)) {
+        alert("Please enter your Name and WhatsApp Number to register your face securely.");
+        return;
+    }
+
     // ── Capture current frame ──
     canvas.width = video.videoWidth || 640;
     canvas.height = video.videoHeight || 480;
@@ -3921,8 +3957,6 @@ async function captureAndSearch() {
     if (arc) arc.classList.add('complete');
 
     // ── Get guest info ──
-    const guestName = document.getElementById('aiGuestName')?.value.trim() || '';
-    const guestPhone = document.getElementById('aiGuestPhone')?.value.trim() || '';
     const clientCodeForSearch = window.clientCode || localStorage.getItem('clientCode') || '';
 
     // ── Show loader, hide controls ──
@@ -4014,8 +4048,7 @@ function displaySearchResults(matches) {
                 <button id="aiDownloadAllBtnTop" class="ai-download-all-btn" onclick="downloadAllAIMatches()" style="background: linear-gradient(135deg, #c5a059, #e0c283); color: black; border: none; border-radius: 20px; padding: 6px 14px; font-weight: bold; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(197,160,89,0.3); transition: transform 0.2s;">
                     <i class="fas fa-download"></i> Download All
                 </button>
-            </div>
-            <p style="font-size: 10px; color: #a1a1aa; margin-top: 8px; font-weight: normal;">💡 Tip: Long-press any photo to select multiple photos for download.</p>`;
+            </div>`;
     }
 
     // Render each photo as a luxury card
@@ -4038,76 +4071,52 @@ function displaySearchResults(matches) {
             _openAILightbox(cardIdx);
         };
 
-        // Download button (BUG #2 FIX)
-        const fname = imgUrl.split('/').pop().split('?')[0] || `memory_${cardIdx + 1}.jpg`;
-        const dlBtn = document.createElement('button');
-        dlBtn.className = 'ai-result-download-btn';
-        dlBtn.innerHTML = '<i class="fas fa-download"></i>';
-        dlBtn.title = 'Download';
-        dlBtn.style.cssText = 'position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); color:white; padding:8px; border-radius:50%; font-size:12px; cursor:pointer; z-index:2147483647; text-decoration:none; display:flex; justify-content:center; align-items:center; width:30px; height:30px; transition:transform 0.2s; backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,0.2);';
-        dlBtn.onclick = (e) => {
-            e.stopPropagation();
-            forceDownloadImage(imgUrl, fname);
-        };
+        // Check if already downloaded
+        let isDownloaded = false;
+        try {
+            const registry = JSON.parse(localStorage.getItem('vs_downloaded_ai') || '[]');
+            if (registry.includes(fname)) {
+                isDownloaded = true;
+            }
+        } catch(e) {}
 
-        // Multi-Selection Checkmark (Hidden by default)
-        const checkmark = document.createElement('div');
-        checkmark.className = 'ai-selection-checkmark';
-        checkmark.innerHTML = '<i class="fas fa-check"></i>';
-        checkmark.style.cssText = 'position:absolute; top:10px; left:10px; width:24px; height:24px; border-radius:50%; border:2px solid white; background:rgba(0,0,0,0.4); color:transparent; display:flex; justify-content:center; align-items:center; font-size:12px; z-index:2147483647; transition:all 0.2s ease; pointer-events:none; opacity:0; transform:scale(0.8);';
+        if (isDownloaded) {
+            // Apply Golden Luxury Badge instead of download button
+            const savedBadge = document.createElement('div');
+            savedBadge.innerHTML = '<i class="fas fa-check-circle"></i> Saved';
+            savedBadge.style.cssText = 'position:absolute; top:10px; right:10px; background:linear-gradient(135deg, #c5a059, #e0c283); color:#222; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:bold; font-family:"Montserrat", sans-serif; z-index:2147483647; display:flex; gap:4px; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.3);';
+            card.appendChild(savedBadge);
+        } else {
+            // Download button (BUG #2 FIX)
+            const dlBtn = document.createElement('button');
+            dlBtn.className = 'ai-result-download-btn';
+            dlBtn.innerHTML = '<i class="fas fa-download"></i>';
+            dlBtn.title = 'Download';
+            dlBtn.style.cssText = 'position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); color:white; padding:8px; border-radius:50%; font-size:12px; cursor:pointer; z-index:2147483647; text-decoration:none; display:flex; justify-content:center; align-items:center; width:30px; height:30px; transition:transform 0.2s; backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,0.2);';
+            dlBtn.onclick = (e) => {
+                e.stopPropagation();
+                forceDownloadImage(imgUrl, fname);
+                // Dynamically transform button to "Saved" badge on click for immediate feedback
+                dlBtn.style.cssText = 'position:absolute; top:10px; right:10px; background:linear-gradient(135deg, #c5a059, #e0c283); color:#222; padding:4px 10px; border-radius:20px; font-size:10px; font-weight:bold; font-family:"Montserrat", sans-serif; z-index:2147483647; display:flex; gap:4px; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,0.3);';
+                dlBtn.innerHTML = '<i class="fas fa-check-circle"></i> Saved';
+            };
+            card.appendChild(dlBtn);
+        }
         
         card.dataset.url = imgUrl; // Store url for easy access
 
         card.appendChild(img);
         card.appendChild(expandBtn);
-        card.appendChild(dlBtn);
-        card.appendChild(checkmark);
 
-        // --- LONG PRESS & CLICK HANDLING ---
-        let isLongPress = false;
-        
         const handleContextMenu = (e) => {
-            if (_aiIsSelectionMode) e.preventDefault(); // Prevent standard right-click menu if selecting
-        };
-        
-        const handleTouchStart = (e) => {
-            isLongPress = false;
-            _aiTouchTimer = setTimeout(() => {
-                isLongPress = true;
-                toggleCardSelection(card, imgUrl);
-                // Vibrate if supported
-                if (navigator.vibrate) navigator.vibrate(50);
-            }, 600); // 600ms = Long Press
+            e.preventDefault(); // Always prevent standard right-click/long-press menu on AI cards
         };
 
-        const handleTouchEnd = (e) => {
-            if (_aiTouchTimer) clearTimeout(_aiTouchTimer);
-        };
-
-        const handleTouchMove = () => {
-            // Cancel long press if user swipes/scrolls
-            if (_aiTouchTimer) clearTimeout(_aiTouchTimer);
-        };
-
-        card.addEventListener('mousedown', handleTouchStart);
-        card.addEventListener('touchstart', handleTouchStart, {passive: true});
-        card.addEventListener('mouseup', handleTouchEnd);
-        card.addEventListener('touchend', handleTouchEnd);
-        card.addEventListener('mousemove', handleTouchMove);
-        card.addEventListener('touchmove', handleTouchMove, {passive: true});
         card.addEventListener('contextmenu', handleContextMenu);
 
-        // Click card to open lightbox OR select if in selection mode
+        // Click card to open lightbox
         card.onclick = (e) => {
-            if (isLongPress) {
-                // Ignore click if it was just a long press
-                return;
-            }
-            if (_aiIsSelectionMode) {
-                toggleCardSelection(card, imgUrl);
-            } else {
-                _openAILightbox(cardIdx);
-            }
+            _openAILightbox(cardIdx);
         };
         grid.appendChild(card);
     });
@@ -4140,13 +4149,19 @@ function toggleCardSelection(cardElement, url) {
     updateSelectionUI();
 }
 
+function activateSelectionMode() {
+    _aiIsSelectionMode = true;
+    updateSelectionUI();
+}
+
 function updateSelectionUI() {
     let selectionBar = document.getElementById('aiSelectionBar');
     const downloadAllBtn = document.getElementById('aiDownloadAllBtnTop');
+    const selectMultipleBtn = document.getElementById('aiSelectMultipleBtnTop');
 
-    if (_aiSelectedUrls.size > 0) {
-        _aiIsSelectionMode = true;
+    if (_aiIsSelectionMode) {
         if (downloadAllBtn) downloadAllBtn.style.display = 'none';
+        if (selectMultipleBtn) selectMultipleBtn.style.display = 'none';
 
         // Dim unselected cards to highlight selected ones
         document.querySelectorAll('.ai-result-card').forEach(card => {
@@ -4206,8 +4221,8 @@ function updateSelectionUI() {
         document.getElementById('aiSelectionCount').innerHTML = `${_aiSelectedUrls.size} Selected`;
 
     } else {
-        _aiIsSelectionMode = false;
         if (downloadAllBtn) downloadAllBtn.style.display = 'flex';
+        if (selectMultipleBtn) selectMultipleBtn.style.display = 'flex';
         if (selectionBar) selectionBar.remove();
 
         // Restore cards
@@ -4244,6 +4259,11 @@ function _openAILightbox(startIdx) {
     lb.style.display = 'flex';
     setTimeout(() => { lb.classList.add('is-active'); resetLightboxIdleTimer(); }, 10);
     document.body.style.overflow = 'hidden';
+
+    // 🔙 Back-Button Bug Fix
+    if (window.location.hash !== '#view') {
+        history.pushState({ modalOpen: true }, "", "#view");
+    }
 
     // Add download button to lightbox if not already there
     _injectLightboxDownloadBtn(prevPhotos, prevIsSelMode);
@@ -4497,4 +4517,5 @@ window.captureAndSearch = captureAndSearch;
 window.resetAICamera = resetAICamera;
 window.downloadAllAIMatches = downloadAllAIMatches;
 window.forceDownloadImage = forceDownloadImage;
+window.activateSelectionMode = activateSelectionMode;
 window.downloadSelectedPhotos = downloadSelectedPhotos;
