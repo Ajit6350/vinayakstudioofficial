@@ -591,7 +591,7 @@ function processClientLoungeData(clientData, clientCode) {
             rsvpDiv.style.cssText = 'margin-top: 12px; display: flex; justify-content: center;';
 
             rsvpDiv.innerHTML = `
-                <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(197,160,89,0.2); color: #fff; border-radius: 20px; padding: 4px 12px; font-size: 10px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 6px; letter-spacing: 1px; text-transform: uppercase;">
+                <div class="video-delivered-badge">
                     <span style="width: 6px; height: 6px; background: #c5a059; border-radius: 50%; box-shadow: 0 0 8px #c5a059;"></span>
                     <span>Delivered to ${videoViews} Guests</span>
                 </div>

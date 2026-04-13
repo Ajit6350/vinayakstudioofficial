@@ -7482,3 +7482,19 @@ body.selection-mode-active .n-card .selection-heart-btn {
 .ai-result-card {
     -webkit-user-drag: none;
 }
+
+/* --- VIDEO DELIVERED BADGE --- */
+.video-delivered-badge {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
